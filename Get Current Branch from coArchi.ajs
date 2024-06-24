@@ -1,0 +1,38 @@
+/**
+ * Two methods to get the current branch from a coArchi repo.
+ */
+
+console.show();
+console.clear();
+
+var File = Java.type("java.io.File");
+var Files = Java.type("java.nio.file.Files");
+
+// Path to the git repository (on Windows)
+const repoPath = new File("C:/Users/user-name/Documents/Archi/model-repository/repo");
+
+// Method #1 - using JGit to access the repository
+
+// Path to the lib folder containing JGit jar files (on Windows)
+const libPath = new File("C:/Users/user-name/AppData/Roaming/Archi/dropins/org.archicontribs.modelrepository_0.9.2.202311181027/lib");
+
+// Add JGit jars to the class path
+libPath.listFiles().forEach(jarFile => {
+    Java.addToClasspath(jarFile);
+});
+
+// Open the repository using JGit
+var Git = Java.type("org.eclipse.jgit.api.Git");
+const git = Git.open(repoPath);
+
+// Print the current branch
+console.log(git.repository.branch);
+
+// Close the JGit repository
+git.close();
+
+// Method #2 - read the "HEAD" file in the .git folder of the repo
+
+const path = new File(repoPath, ".git/HEAD").toPath();
+const branch = Files.readString(path);
+console.log(branch.trim().split('/')[2]);

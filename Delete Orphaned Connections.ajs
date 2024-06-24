@@ -1,0 +1,24 @@
+/**
+ * Delete orphaned connections from coArchi 1
+ */
+
+console.show();
+console.clear();
+console.log("Scanning...");
+
+$('view').find('relation').each(function(connection) {
+    var relation = connection.concept;
+    var relationSource = relation.source;
+    var relationTarget = relation.target;
+
+    var connectionSource = connection.source.concept;
+    var connectionTarget = connection.target.concept;
+    
+    if(connectionSource.id != relationSource.id || connectionTarget.id != relationTarget.id) {
+        console.log("In View: " + connection.view.name);
+        console.log("Deleted connection: " + connection.name + " (" + connectionSource.name + " - " + connectionTarget.name + ")\n");
+        connection.delete();
+    }
+});	
+
+console.log("Fixed");

@@ -1,0 +1,18 @@
+/**
+ * Get all of the internal SWT Images in the ArchiveManager of the current selected model.
+ */
+
+console.show();
+console.clear();
+
+load("Native Functions.ajs");
+
+var archiveManager = getActiveArchiveManager();
+if(archiveManager) {
+    // Get all image paths and create an SWT Image. An Image needs to be disposed after using it!
+    archiveManager.imagePaths.forEach(path => {
+        var swtImage = archiveManager.createImage(path);
+        console.log(swtImage);
+        swtImage.dispose();
+    });
+}

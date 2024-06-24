@@ -1,0 +1,22 @@
+/**
+ * Timer functions to time things.
+ */
+
+var Timer = {
+    startTime : 0,
+
+    start : function(s) {
+        console.log("Starting: ", s || "");
+        startTime = Java.type("java.lang.System").currentTimeMillis();
+    },
+
+    stop : function(s) {
+        console.log("Stopped: ", s || "" , Java.type("java.lang.System").currentTimeMillis() - startTime, "milliseconds");
+    }
+};
+
+console.show();
+console.clear();
+
+Timer.start("Some Message");
+Timer.stop();

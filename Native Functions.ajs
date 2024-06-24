@@ -1,0 +1,43 @@
+/**
+ * Native Functions to access Eclipse stuff - model, SWT, etc
+ */
+
+const WorkbenchPartTracker = Java.type("com.archimatetool.script.WorkbenchPartTracker");
+const IArchimateModel = Java.type("com.archimatetool.model.IArchimateModel");
+const IArchiveManager = Java.type("com.archimatetool.editor.model.IArchiveManager");
+
+/**
+ * Return the active workbench part.
+ * Use the WorkbenchPartTracker to get the ITreeModelView or IDiagramModelEditor (or null)
+ */
+function getActivePart() {
+    return WorkbenchPartTracker.INSTANCE.getActivePart();
+}
+
+/**
+ * Return the active IArchimateModel (can be null)
+ */
+function getActiveModel() {
+    var part = WorkbenchPartTracker.INSTANCE.getActivePart();
+    return part ? part.getAdapter(IArchimateModel.class) : null;
+}
+
+/**
+ * Return the active IArchiveManager for the active model (can be null)
+ */
+function getActiveArchiveManager() {
+    var model = getActiveModel();
+    return model ? model.getAdapter(IArchiveManager.class) : null;
+}
+
+/**
+ * Return the native eObject for the given jArchi Object using Java Reflection
+ * Example:
+ * let selected = selection.first();
+ * var eObject = getEObject(selected);
+ */
+function getEObject(jArchiObject) {
+    var method = jArchiObject.class.getDeclaredMethod("getEObject");
+    method.setAccessible(true);
+    return method.invoke(jArchiObject);
+}
