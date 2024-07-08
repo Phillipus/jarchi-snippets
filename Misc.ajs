@@ -1,0 +1,8 @@
+// Swap source/target of connection/relation
+// var relation = selection.first().concept;
+function swapEnds(relation) {
+    var target = relation.target;
+    relation.target = relation.source;
+    relation.source = target;
+}
+
