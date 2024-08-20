@@ -1,0 +1,13 @@
+/**
+ * Scale fonts on Mac to match 96 DPI
+ */
+
+const scaling = 72 / 96;
+
+// Iterate through all views and their child objects/connections
+$("view").children().each(function setFontSize(child) {
+    child.fontSize = child.fontSize * scaling;
+    $(child).children().each(child2 => {
+        setFontSize(child2);
+    });
+});
