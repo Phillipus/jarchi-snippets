@@ -1,0 +1,11 @@
+/**
+ * Create some random properties for an object
+ * eg: createProperties(selected, 100);
+ */
+function createProperties(object, howMany) {
+    const chars = "abcdefghijklmnopqrstuvwxyz";
+
+    for(let index = 0; index < howMany; index++) {
+        object.prop(chars[index % 26].toString() + index, index.toString(), true);
+    }
+}

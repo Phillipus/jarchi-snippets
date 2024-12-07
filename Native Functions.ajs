@@ -7,6 +7,14 @@ const IArchimateModel = Java.type("com.archimatetool.model.IArchimateModel");
 const IArchiveManager = Java.type("com.archimatetool.editor.model.IArchiveManager");
 
 /**
+ * Find a ViewPart
+ * eg: findViewPart("com.archimatetool.editor.treeModelView");
+ */
+function findViewPart(viewID) {
+    return Java.type("com.archimatetool.editor.ui.services.ViewManager").findViewPart(viewID);
+}
+
+/**
  * Return the active workbench part.
  * Use the WorkbenchPartTracker to get the ITreeModelView or IDiagramModelEditor (or null)
  */
