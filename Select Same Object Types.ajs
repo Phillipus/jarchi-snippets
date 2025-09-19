@@ -1,0 +1,42 @@
+/**
+ * Select same object types in a diagram
+ * See https://github.com/archimatetool/archi/issues/1178
+ */
+
+// Declare Java types
+const IDiagramModelArchimateComponent = Java.type("com.archimatetool.model.IDiagramModelArchimateComponent");
+const IDiagramModelEditor = Java.type("com.archimatetool.editor.diagram.IDiagramModelEditor");
+
+// Get active editor
+const activeEditor = workbenchwindow.getActivePage().getActiveEditor();
+if(activeEditor instanceof IDiagramModelEditor) {
+    // Get selected edit parts
+    const selectedEditParts = activeEditor.getGraphicalViewer().getSelectedEditParts();
+    if(selectedEditParts && selectedEditParts.length > 0) {
+        let sameObjects = [];
+
+        // Get first selected diagram object
+        let selectedObject = selectedEditParts.get(0).getModel();
+
+        // If it's an ArchiMate type diagram object get the underlying concept
+        if(selectedObject instanceof IDiagramModelArchimateComponent) {
+            selectedObject = selectedObject.getArchimateConcept();
+        }
+
+        // Iterate over all diagram objects in the active diagram and if the same type add to sameObjects
+        const contents = activeEditor.getModel().eAllContents();
+        while(contents.hasNext()) {
+            const object = contents.next();
+            const type = object instanceof IDiagramModelArchimateComponent ? object.getArchimateConcept().eClass() : object.eClass();
+            if(selectedObject.eClass() == type) {
+                sameObjects.push(object);
+            }
+        }
+
+        // Select them
+        if(sameObjects.length > 0) {
+            activeEditor.selectObjects(sameObjects);
+        }
+    }
+}
+
